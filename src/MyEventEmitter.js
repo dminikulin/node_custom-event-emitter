@@ -15,6 +15,8 @@ class MyEventEmitter {
       listener(...args);
     };
 
+    wrapper.original = listener;
+
     this.on(event, wrapper);
   }
   off(event, listener) {
@@ -22,7 +24,9 @@ class MyEventEmitter {
       return;
     }
 
-    const idx = this._events[event].indexOf(listener);
+    const idx = this._events[event].findIndex(
+      (fn) => fn === listener || fn.original === listener,
+    );
 
     if (idx !== -1) {
       this._events[event].splice(idx, 1);
@@ -48,6 +52,8 @@ class MyEventEmitter {
       this.off(event, wrapper);
       listener(...args);
     };
+
+    wrapper.original = listener;
 
     this.prependListener(event, wrapper);
   }
