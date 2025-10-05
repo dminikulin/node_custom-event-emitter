@@ -59,7 +59,7 @@ class MyEventEmitter {
   }
   removeAllListeners(event) {
     if (event) {
-      this._events[event] = [];
+      delete this._events[event];
     } else {
       this._events = {};
     }
